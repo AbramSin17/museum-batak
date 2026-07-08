@@ -149,7 +149,7 @@ AFRAME.registerComponent('gorga-texture', {
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
     texture.repeat.set(1, 3);
-    
+
     const renderer = this.el.sceneEl.renderer;
     if (renderer) {
       texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
@@ -180,7 +180,7 @@ AFRAME.registerComponent('video-controller', {
   init: function () {
     const video = this.data.videoEl;
     const el = this.el;
-    
+
     if (!video) return;
 
     // Listen for click event
@@ -209,7 +209,7 @@ AFRAME.registerComponent('video-controller', {
         document.getElementById('crosshair').classList.add('active');
       }
     });
-    
+
     el.addEventListener('mouseleave', () => {
       el.setAttribute('scale', '1 1 1');
       document.getElementById('crosshair').classList.remove('active');
@@ -222,7 +222,7 @@ AFRAME.registerComponent('video-controller', {
 AFRAME.registerComponent('exhibits-generator', {
   init: function () {
     const sceneEl = this.el;
-    
+
     // Get or create <a-assets> container
     let assetsEl = sceneEl.querySelector('a-assets');
     if (!assetsEl) {
@@ -236,7 +236,6 @@ AFRAME.registerComponent('exhibits-generator', {
         const video = document.createElement('video');
         video.setAttribute('id', `${exhibit.id}-asset`);
         video.setAttribute('src', exhibit.src);
-        video.setAttribute('autoplay', 'true');
         video.setAttribute('loop', 'true');
         video.setAttribute('muted', 'true');
         video.setAttribute('playsinline', 'true');
@@ -298,7 +297,7 @@ AFRAME.registerComponent('exhibits-generator', {
         imgPlane.setAttribute('position', '0 0 0.026'); // Positioned on top of the borders
         imgPlane.setAttribute('material', `src: #${exhibit.id}-asset; shader: standard; roughness: 0.7; metalness: 0.0`);
         imgPlane.setAttribute('class', 'clickable');
-        
+
         // Dynamic scale hover effect
         imgPlane.addEventListener('mouseenter', () => {
           imgPlane.setAttribute('scale', '1.01 1.01 1.01');
@@ -362,6 +361,9 @@ AFRAME.registerComponent('exhibits-generator', {
         const modelEl = document.createElement('a-entity');
         modelEl.setAttribute('gltf-model', `#${exhibit.id}-asset`);
         modelEl.setAttribute('position', '0 1.25 0');
+        if (exhibit.modelRotation) {
+          modelEl.setAttribute('rotation', `${exhibit.modelRotation.x} ${exhibit.modelRotation.y} ${exhibit.modelRotation.z}`);
+        }
         modelEl.setAttribute('scale', `${exhibit.scale.x} ${exhibit.scale.y} ${exhibit.scale.z}`);
         // Slow Y rotation animation
         modelEl.setAttribute('animation', 'property: rotation; to: 0 360 0; loop: true; dur: 16000; easing: linear; rgb: true');
