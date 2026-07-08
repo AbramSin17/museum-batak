@@ -8,7 +8,7 @@ const EXHIBITS_DATA = [
     src: "assets/images/Batak1.jpg",
     title: "Upacara Adat Batak Toba",
     description: "Upacara spiritual adat Batak Toba yang khidmat dengan balutan Ulos khas.",
-    position: { x: -4.9, y: 2.0, z: -12 },
+    position: { x: -4.9, y: 2.0, z: -9 },
     rotation: { x: 0, y: 90, z: 0 }
   },
   {
@@ -17,7 +17,7 @@ const EXHIBITS_DATA = [
     src: "assets/videos/videobatak1.mp4",
     title: "Tari Tortor Tradisional",
     description: "Tari seremonial sakral Batak Toba untuk menghormati leluhur dan menyampaikan doa. Klik untuk Play/Pause.",
-    position: { x: 4.9, y: 2.0, z: -9 },
+    position: { x: 4.9, y: 2.0, z: -7.5 },
     rotation: { x: 0, y: -90, z: 0 }
   },
   {
@@ -74,7 +74,7 @@ const EXHIBITS_DATA = [
     src: "assets/videos/videobatak2.mp4",
     title: "Instrumen Kecapi Batak",
     description: "Lagu petikan tradisional Batak menggunakan alat musik dawai Kecapi. Klik untuk Play/Pause.",
-    position: { x: 4.9, y: 2.0, z: 9 },
+    position: { x: 4.9, y: 2.0, z: 7.5 },
     rotation: { x: 0, y: -90, z: 0 }
   },
   {
@@ -83,7 +83,7 @@ const EXHIBITS_DATA = [
     src: "assets/images/Batak4.jpg",
     title: "Seni Ukiran Gorga",
     description: "Ornamen ukiran khas rumah adat Batak bernuansa merah, hitam, dan kuning/putih.",
-    position: { x: -4.9, y: 2.0, z: 12 },
+    position: { x: -4.9, y: 2.0, z: 9 },
     rotation: { x: 0, y: 90, z: 0 }
   }
 ];
