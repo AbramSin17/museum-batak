@@ -33,7 +33,7 @@ const EXHIBITS_DATA = [
     id: "model-pria",
     type: "model",
     src: "assets/models/pakaian_adat_batak_cowok.glb",
-    title: "Pakaian Adat Batak - Pria",
+    title: "Pakaian Adat Pria",
     description: "Busana pengantin laki-laki Batak Toba dengan ikat kepala Sortali dan tenun Ulos Ragi Hotang.",
     position: { x: 3.8, y: 0, z: -3 }, // Right side
     rotation: { x: 0, y: -90, z: 0 },
@@ -53,7 +53,7 @@ const EXHIBITS_DATA = [
     id: "model-wanita",
     type: "model",
     src: "assets/models/pakaian_adat_batak_toba_cewek.glb",
-    title: "Pakaian Adat Batak - Wanita",
+    title: "Pakaian Adat Wanita",
     description: "Pakaian tradisional wanita Batak Toba lengkap dengan ikat kepala Sortali dan selendang Ulos.",
     position: { x: 3.8, y: 0, z: 3 }, // Right side
     rotation: { x: 0, y: -90, z: 0 },

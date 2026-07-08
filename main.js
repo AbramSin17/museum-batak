@@ -318,7 +318,7 @@ AFRAME.registerComponent('exhibits-generator', {
         // Description text
         const descEl = document.createElement('a-entity');
         descEl.setAttribute('text', `value: ${exhibit.description}; align: center; color: #dfdfdf; width: 2.0; font: roboto;`);
-        descEl.setAttribute('position', '0 -1.2 0.04');
+        descEl.setAttribute('position', '0 -1.25 0.04');
         container.appendChild(descEl);
 
       } else if (exhibit.type === 'model') {
@@ -361,9 +361,6 @@ AFRAME.registerComponent('exhibits-generator', {
         const modelEl = document.createElement('a-entity');
         modelEl.setAttribute('gltf-model', `#${exhibit.id}-asset`);
         modelEl.setAttribute('position', '0 1.25 0');
-        if (exhibit.modelRotation) {
-          modelEl.setAttribute('rotation', `${exhibit.modelRotation.x} ${exhibit.modelRotation.y} ${exhibit.modelRotation.z}`);
-        }
         modelEl.setAttribute('scale', `${exhibit.scale.x} ${exhibit.scale.y} ${exhibit.scale.z}`);
         // Slow Y rotation animation
         modelEl.setAttribute('animation', 'property: rotation; to: 0 360 0; loop: true; dur: 16000; easing: linear; rgb: true');
@@ -427,7 +424,7 @@ AFRAME.registerComponent('exhibits-generator', {
         // Description below title
         const descEl = document.createElement('a-entity');
         descEl.setAttribute('text', `value: ${exhibit.description}; align: center; color: #dfdfdf; width: 2.0; font: roboto;`);
-        descEl.setAttribute('position', '0 -1.1 0.04');
+        descEl.setAttribute('position', '0 -1.23 0.04');
         container.appendChild(descEl);
       }
 
