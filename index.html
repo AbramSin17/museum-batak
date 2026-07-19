@@ -235,6 +235,63 @@
         <a-cylinder position="0 6.75 0" radius="0.26" height="0.5" mixin="wood-dark"></a-cylinder>
       </a-entity>
 
+      <!-- ================= NAVIGATION PORTALS ================= -->
+      <!-- Portal to Scene 2 (Panorama 360°) -->
+      <a-entity position="-2.5 1.2 12" rotation="0 180 0">
+        <!-- Visual dekorasi: Gold Ring (tidak perlu clickable/listener) -->
+        <a-ring radius-inner="0.6" radius-outer="0.75" color="#d4af37" 
+                material="shader: standard; roughness: 0.1; metalness: 0.9; side: double; emissive: #d4af37; emissiveIntensity: 0.3;"
+                animation="property: rotation; to: 0 0 360; dur: 8000; loop: true; easing: linear"
+                animation__pulse="property: scale; to: 1.05 1.05 1.05; dir: alternate; dur: 1500; loop: true; easing: easeInOutSine">
+        </a-ring>
+        <!-- Visual dekorasi: Red Ring (tidak perlu clickable/listener) -->
+        <a-ring radius-inner="0.77" radius-outer="0.82" color="#7a1f1f" 
+                material="shader: flat; side: double; opacity: 0.9"
+                animation="property: rotation; to: 0 0 -360; dur: 12000; loop: true; easing: linear">
+        </a-ring>
+        <!-- Inner shadow background for contrast -->
+        <a-ring radius-inner="0.58" radius-outer="0.59" color="#000" material="shader: flat; side: double; opacity: 0.5"></a-ring>
+        <a-circle radius="0.59" color="#111" material="shader: standard; opacity: 0.4; transparent: true; roughness: 0.8; metalness: 0.1; side: double;"></a-circle>
+        
+        <!-- Hit Area Transparan (clickable + listener hotspot-trigger) -->
+        <a-circle radius="0.75" 
+                  material="transparent: true; opacity: 0; shader: flat; side: double;" 
+                  class="clickable" 
+                  hotspot-trigger="topic: portal-scene2">
+        </a-circle>
+
+        <!-- Label above the portal -->
+        <a-entity text="value: TUR PANORAMA 360°; align: center; color: #ffffff; width: 3.5; font: roboto;" position="0 1.0 0"></a-entity>
+      </a-entity>
+
+      <!-- Portal to Scene 3 (Model Rumah Bolon 3D) -->
+      <a-entity position="2.5 1.2 12" rotation="0 180 0">
+        <!-- Visual dekorasi: Gold Ring (tidak perlu clickable/listener) -->
+        <a-ring radius-inner="0.6" radius-outer="0.75" color="#d4af37" 
+                material="shader: standard; roughness: 0.1; metalness: 0.9; side: double; emissive: #d4af37; emissiveIntensity: 0.3;"
+                animation="property: rotation; to: 0 0 360; dur: 8000; loop: true; easing: linear"
+                animation__pulse="property: scale; to: 1.05 1.05 1.05; dir: alternate; dur: 1500; loop: true; easing: easeInOutSine">
+        </a-ring>
+        <!-- Visual dekorasi: Red Ring (tidak perlu clickable/listener) -->
+        <a-ring radius-inner="0.77" radius-outer="0.82" color="#7a1f1f" 
+                material="shader: flat; side: double; opacity: 0.9"
+                animation="property: rotation; to: 0 0 -360; dur: 12000; loop: true; easing: linear">
+        </a-ring>
+        <!-- Inner shadow background for contrast -->
+        <a-ring radius-inner="0.58" radius-outer="0.59" color="#000" material="shader: flat; side: double; opacity: 0.5"></a-ring>
+        <a-circle radius="0.59" color="#111" material="shader: standard; opacity: 0.4; transparent: true; roughness: 0.8; metalness: 0.1; side: double;"></a-circle>
+        
+        <!-- Hit Area Transparan (clickable + listener hotspot-trigger) -->
+        <a-circle radius="0.75" 
+                  material="transparent: true; opacity: 0; shader: flat; side: double;" 
+                  class="clickable" 
+                  hotspot-trigger="topic: portal-scene3">
+        </a-circle>
+
+        <!-- Label above the portal -->
+        <a-entity text="value: RUMAH BOLON 3D; align: center; color: #ffffff; width: 3.5; font: roboto;" position="0 1.0 0"></a-entity>
+      </a-entity>
+
     </a-scene>
   </div>
 
