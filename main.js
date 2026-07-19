@@ -459,9 +459,152 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.addEventListener('pointerlockchange', () => {
     if (scene && scene.canvas && document.pointerLockElement === scene.canvas) {
-      overlay.classList.add('hidden');
+      if (overlay) overlay.classList.add('hidden');
     } else {
-      overlay.classList.remove('hidden');
+      if (overlay && !window.popupActive) overlay.classList.remove('hidden');
     }
   });
+});
+
+// Register A-Frame Custom Component: Portal Teleportation
+// Handles click events on a portal to navigate to a new page, releasing pointer lock first.
+AFRAME.registerComponent('portal-teleport', {
+  schema: {
+    url: { type: 'string' }
+  },
+  init: function () {
+    const el = this.el;
+    el.classList.add('clickable');
+    
+    el.addEventListener('click', () => {
+      if (document.pointerLockElement) {
+        document.exitPointerLock();
+      }
+      setTimeout(() => {
+        window.location.href = this.data.url;
+      }, 100);
+    });
+    
+    el.addEventListener('mouseenter', () => {
+      el.setAttribute('scale', '1.1 1.1 1.1');
+      const crosshair = document.getElementById('crosshair');
+      if (crosshair) crosshair.classList.add('active');
+    });
+    
+    el.addEventListener('mouseleave', () => {
+      el.setAttribute('scale', '1 1 1');
+      const crosshair = document.getElementById('crosshair');
+      if (crosshair) crosshair.classList.remove('active');
+    });
+  }
+});
+
+// Register A-Frame Custom Component: Hotspot & Portal Gaze Trigger
+// Handles both detail popups (Scene 2) and portal transitions across all scenes.
+AFRAME.registerComponent('hotspot-trigger', {
+  schema: {
+    topic: { type: 'string' }
+  },
+  init: function () {
+    const el = this.el;
+    el.classList.add('clickable');
+
+    el.addEventListener('click', () => {
+      const topic = this.data.topic;
+      if (topic.startsWith('portal-')) {
+        if (document.pointerLockElement) {
+          document.exitPointerLock();
+        }
+        let targetUrl = 'index.html';
+        if (topic === 'portal-scene2') {
+          targetUrl = 'scene2.html';
+        } else if (topic === 'portal-scene3') {
+          targetUrl = 'scene3-model.html';
+        }
+        setTimeout(() => {
+          window.location.href = targetUrl;
+        }, 100);
+      } else {
+        if (typeof HOTSPOTS_INFO !== 'undefined' && typeof showPopup === 'function') {
+          const data = HOTSPOTS_INFO[topic];
+          if (data) {
+            showPopup(data);
+          }
+        }
+      }
+    });
+  }
+});
+
+// Register A-Frame Custom Component: Face Camera
+// Rotates the entity dynamically to face the player's camera.
+AFRAME.registerComponent('face-camera', {
+  tick: function () {
+    const camera = this.el.sceneEl.camera;
+    if (camera) {
+      this.el.object3D.lookAt(camera.position);
+    }
+  }
+});
+
+// Register A-Frame Custom Component: Spin On Click
+// Triggers a fast 360-degree rotation spin animation on click, lasting 1000ms.
+AFRAME.registerComponent('spin-on-click', {
+  init: function () {
+    const el = this.el;
+    let spinning = false;
+    
+    el.classList.add('clickable');
+    
+    el.addEventListener('click', () => {
+      if (spinning) return;
+      spinning = true;
+      
+      const currRot = el.getAttribute('rotation') || { x: 0, y: 0, z: 0 };
+      const targetY = currRot.y + 360;
+      
+      el.setAttribute('animation', {
+        property: 'rotation',
+        to: `${currRot.x} ${targetY} ${currRot.z}`,
+        dur: 1000,
+        easing: 'easeOutQuad'
+      });
+      
+      setTimeout(() => {
+        el.removeAttribute('animation');
+        el.setAttribute('rotation', `${currRot.x} ${targetY % 360} ${currRot.z}`);
+        spinning = false;
+      }, 1000);
+    });
+
+    el.addEventListener('mouseenter', () => {
+      const crosshair = document.getElementById('crosshair');
+      if (crosshair) crosshair.classList.add('active');
+    });
+    
+    el.addEventListener('mouseleave', () => {
+      const crosshair = document.getElementById('crosshair');
+      if (crosshair) crosshair.classList.remove('active');
+    });
+  }
+});
+
+// Register A-Frame Custom Component: World Boundary Constraint
+// Restricts player movement to a boundary box in Scene 3 to prevent walking off the floor.
+AFRAME.registerComponent('world-boundary-constraint', {
+  schema: {
+    minX: { type: 'number', default: -25 },
+    maxX: { type: 'number', default: 25 },
+    minZ: { type: 'number', default: -25 },
+    maxZ: { type: 'number', default: 25 },
+    fixedY: { type: 'number', default: 1.6 }
+  },
+  tick: function () {
+    const pos = this.el.object3D.position;
+    if (pos.x < this.data.minX) pos.x = this.data.minX;
+    if (pos.x > this.data.maxX) pos.x = this.data.maxX;
+    if (pos.z < this.data.minZ) pos.z = this.data.minZ;
+    if (pos.z > this.data.maxZ) pos.z = this.data.maxZ;
+    pos.y = this.data.fixedY;
+  }
 });
