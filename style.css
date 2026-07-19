@@ -247,3 +247,53 @@ body, html {
     align-items: center;
   }
 }
+
+/* Active crosshair state when hovering over clickable items */
+#crosshair.active::before {
+  transform: scale(1.5);
+  background-color: #fffae6;
+  box-shadow: 0 0 12px #D4AF37;
+}
+
+#crosshair.active::after {
+  transform: scale(1.3);
+  border-color: rgba(212, 175, 55, 0.9);
+  background: rgba(212, 175, 55, 0.1);
+}
+
+/* Navigation Bar (HUD Top) */
+#nav-bar {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  gap: 15px;
+  z-index: 100;
+}
+
+.nav-btn {
+  background: rgba(20, 15, 12, 0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  color: #D4AF37;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+  background: rgba(212, 175, 55, 0.2);
+  color: #fff;
+  border-color: #D4AF37;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.2);
+}
+
+.nav-btn:active {
+  transform: translateY(1px);
+}
