@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Museum Pusaka Batak — Tur Panorama 360°</title>
+  <meta name="description"
+    content="Tur virtual 360 derajat Museum Pusaka Batak. Klik hotspot interaktif untuk mempelajari peninggalan budaya seperti patung Sigale-gale, kain Ulos, dan ukiran Gorga.">
+
+  <link rel="stylesheet" href="style.css">
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="main.js"></script>
+
+  <style>
+    .popup-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 8, 6, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+
+    .popup-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .popup-card {
+      width: 90%;
+      max-width: 580px;
+      background: rgba(22, 17, 14, 0.95);
+      border: 4px solid #b31515;
+      border-image: linear-gradient(135deg, #b31515 0%, #d4af37 50%, #b31515 100%) 4;
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 0, 0, 0.6);
+      padding: 35px;
+      border-radius: 4px;
+      position: relative;
+      text-align: center;
+      animation: popupScaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes popupScaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .popup-close {
+      position: absolute;
+      top: 15px;
+      right: 18px;
+      background: none;
+      border: none;
+      color: #d4af37;
+      font-size: 2.2rem;
+      font-weight: 300;
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .popup-close:hover {
+      color: #fff;
+      transform: scale(1.1);
+    }
+
+    .popup-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #d4af37;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #b31515;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .popup-image-container {
+      width: 100%;
+      height: 240px;
+      overflow: hidden;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      margin-bottom: 20px;
+      background-color: #000;
+      border-radius: 4px;
+    }
+
+    .popup-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .popup-card:hover .popup-image {
+      transform: scale(1.04);
+    }
+
+    .popup-text {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.98rem;
+      line-height: 1.6;
+      color: #e0e0e0;
+      text-align: justify;
+      font-weight: 300;
+      margin-bottom: 10px;
+    }
+  </style>
+
+  <script>
+    const HOTSPOTS_INFO = {
+      'sigale-gale': {
+        title: 'Sigale-gale',
+        img: 'assets/hotspot-images/sigale-gale.jpg',
+        text: 'Sigale-gale adalah patung kayu berartikulasi dari budaya Batak Toba, awalnya digunakan dalam ritual kematian bagi keluarga yang tidak memiliki keturunan. Boneka ini digerakkan dengan tali dan diiringi gondang (musik tradisional) dalam sebuah tarian penghormatan.'
+      },
+      'tenun-ulos': {
+        title: 'Tenun Ulos',
+        img: 'assets/hotspot-images/tenun-ulos.jpg',
+        text: 'Ulos adalah kain tenun khas Batak yang dibuat dengan alat tenun tradisional (gedogan). Lebih dari sekadar kain, ulos melambangkan kehangatan, restu, dan ikatan kekeluargaan — diberikan dalam upacara pernikahan, kelahiran, hingga kematian.'
+      },
+      'gorga': {
+        title: 'Gorga',
+        img: 'assets/hotspot-images/gorga-detail.jpg',
+        text: 'Gorga adalah ukiran khas rumah adat Batak dengan warna dasar merah, hitam, dan putih. Motif boraspati (cicak/tokek) melambangkan kesuburan dan keberuntungan, sering ditempatkan di bagian depan rumah sebagai penjaga dari roh jahat.'
+      }
+    };
+
+    // Local handler functions for show/close popup, while hotspot-trigger component is loaded from main.js
+
+    function showPopup(data) {
+      const overlay = document.getElementById('popup-overlay');
+      document.getElementById('popup-title').innerText = data.title;
+      document.getElementById('popup-image').src = data.img;
+      document.getElementById('popup-text').innerText = data.text;
+      overlay.classList.add('active');
+      window.popupActive = true;
+      if (document.pointerLockElement) {
+        document.exitPointerLock();
+      }
+    }
+
+    function closePopup() {
+      const overlay = document.getElementById('popup-overlay');
+      overlay.classList.remove('active');
+      window.popupActive = false;
+      const scene = document.querySelector('a-scene');
+      if (scene && scene.canvas) {
+        scene.canvas.requestPointerLock();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('popup-close-btn').addEventListener('click', closePopup);
+      document.getElementById('popup-overlay').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('popup-overlay')) {
+          closePopup();
+        }
+      });
+    });
+  </script>
+</head>
+
+<body>
+
+  <!-- Welcome Overlay UI -->
+  <div id="overlay">
+    <div class="welcome-card" style="max-width: 420px; padding: 35px;">
+      <h1 class="museum-title" style="font-size: 1.8rem;">Tur Panorama 360°</h1>
+      <p class="museum-subtitle" style="margin-bottom: 20px;">Museum Pusaka Batak</p>
+      <div class="separator" style="margin-bottom: 25px;"></div>
+      <p style="color: #ccc; font-size: 0.88rem; margin-bottom: 30px; font-weight: 300; line-height: 1.55;">
+        Gerakkan mouse untuk melihat sekeliling.<br>
+        Arahkan lingkaran kursor (gaze) ke hotspot emas atau portal navigasi selama 1.2 detik untuk berinteraksi.
+      </p>
+      <button class="enter-btn" id="enter-btn" style="font-size: 0.95rem; padding: 12px 32px;">Klik untuk Mulai</button>
+    </div>
+  </div>
+
+  <!-- HUD Instructions -->
+  <div id="hud-instructions">
+    <strong>Navigasi:</strong><br>
+    • Gerakkan Mouse untuk melihat sekeliling<br>
+    • Arahkan pandangan (gaze) ke hotspot & tahan 1.2s untuk info detail
+  </div>
+
+  <!-- Popup HTML Info Dialog -->
+  <div id="popup-overlay" class="popup-overlay">
+    <div class="popup-card">
+      <button id="popup-close-btn" class="popup-close">&times;</button>
+      <h2 id="popup-title" class="popup-title">Judul Hotspot</h2>
+      <div class="popup-image-container">
+        <img id="popup-image" class="popup-image" src="" alt="Detail Hotspot">
+      </div>
+      <p id="popup-text" class="popup-text">Deskripsi penjelasan detail mengenai hotspot kebudayaan Batak.</p>
+      <p
+        style="color: #d4af37; font-size: 0.82rem; margin-top: 15px; font-style: italic; opacity: 0.8; font-weight: 300;">
+        Klik tombol (X) atau klik di luar kotak untuk melanjutkan penjelajahan
+      </p>
+    </div>
+  </div>
+
+  <!-- 3D Scene Container -->
+  <div id="canvas-container">
+    <a-scene embedded renderer="physicallyCorrectLights: false; colorManagement: true; antialias: true;">
+
+      <a-assets>
+        <img id="sky-panorama" src="assets/panorama/panorama-batak-1.png" crossorigin="anonymous">
+      </a-assets>
+
+      <a-sky src="#sky-panorama" rotation="0 -90 0"></a-sky>
+
+      <!-- Player: look-controls dengan pointerLockEnabled: true, WASD dinatikan -->
+      <a-entity id="player">
+        <a-camera id="camera" look-controls="pointerLockEnabled: true;" wasd-controls="enabled: false;"
+          position="0 1.6 0">
+          <a-cursor id="cursor" cursor="fuse: true; fuseTimeout: 1200" raycaster="objects: .clickable"
+            material="color: #d4af37; shader: flat; opacity: 0.9" position="0 0 -1"
+            geometry="primitive: ring; radiusInner: 0.015; radiusOuter: 0.025"
+            animation__fusing="property: scale; startEvents: fusing; easing: easeInCubic; dur: 1200; from: 1 1 1; to: 0.2 0.2 0.2"
+            animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 300; to: 1 1 1"
+            animation__click="property: scale; startEvents: click; easing: easeInCubic; dur: 150; from: 0.2 0.2 0.2; to: 1 1 1">
+          </a-cursor>
+        </a-camera>
+      </a-entity>
+
+      <a-entity light="type: ambient; color: #ffffff; intensity: 0.8;"></a-entity>
+
+      <!-- ================= HOTSPOTS (class clickable dipasang langsung pada mesh a-sphere) ================= -->
+      <!-- Hotspot 1: Sigale-gale -->
+      <a-entity position="-3.5 1.6 -2" rotation="0 58 0">
+        <a-sphere radius="0.16" color="#7a1f1f" material="emissive: #7a1f1f; emissiveIntensity: 0.6;" class="clickable"
+          hotspot-trigger="topic: sigale-gale">
+        </a-sphere>
+        <a-ring radius-inner="0.17" radius-outer="0.21" color="#ffffff" material="shader: flat; opacity: 0.9;"></a-ring>
+        <a-entity text="value: Sigale-gale; align: center; color: #ffffff; width: 3; font: roboto;"
+          position="0 0.35 0"></a-entity>
+      </a-entity>
+
+      <!-- Hotspot 2: Tenun Ulos -->
+      <a-entity position="2.5 1.6 -3.5" rotation="0 -50 0">
+        <a-sphere radius="0.16" color="#7a1f1f" material="emissive: #7a1f1f; emissiveIntensity: 0.6;" class="clickable"
+          hotspot-trigger="topic: tenun-ulos">
+        </a-sphere>
+        <a-ring radius-inner="0.17" radius-outer="0.21" color="#ffffff" material="shader: flat; opacity: 0.9;"></a-ring>
+        <a-entity text="value: Tenun Ulos; align: center; color: #ffffff; width: 3; font: roboto;"
+          position="0 0.35 0"></a-entity>
+      </a-entity>
+
+      <!-- Hotspot 3: Detail Gorga (Dipindahkan berdampingan dengan Tenun Ulos) -->
+      <a-entity position="0.5 1.6 -4" rotation="0 -5 0">
+        <a-sphere radius="0.16" color="#7a1f1f" material="emissive: #7a1f1f; emissiveIntensity: 0.6;" class="clickable"
+          hotspot-trigger="topic: gorga">
+        </a-sphere>
+        <a-ring radius-inner="0.17" radius-outer="0.21" color="#ffffff" material="shader: flat; opacity: 0.9;"></a-ring>
+        <a-entity text="value: Detail Gorga; align: center; color: #ffffff; width: 3; font: roboto;"
+          position="0 0.35 0"></a-entity>
+      </a-entity>
+
+      <!-- ================= PORTAL NAVIGASI CUSTOM (Consistent gold/red gaze portals) ================= -->
+      <!-- Portal to Scene 1 (Ke Aula Utama) -->
+      <a-entity position="-2.5 1.2 3" rotation="0 140 0">
+        <!-- Visual dekorasi: Gold Ring (tidak perlu clickable/listener) -->
+        <a-ring radius-inner="0.6" radius-outer="0.75" color="#d4af37"
+          material="shader: standard; roughness: 0.1; metalness: 0.9; side: double; emissive: #d4af37; emissiveIntensity: 0.3;"
+          animation="property: rotation; to: 0 0 360; dur: 8000; loop: true; easing: linear"
+          animation__pulse="property: scale; to: 1.05 1.05 1.05; dir: alternate; dur: 1500; loop: true; easing: easeInOutSine">
+        </a-ring>
+        <!-- Visual dekorasi: Red Ring (tidak perlu clickable/listener) -->
+        <a-ring radius-inner="0.77" radius-outer="0.82" color="#7a1f1f"
+          material="shader: flat; side: double; opacity: 0.9"
+          animation="property: rotation; to: 0 0 -360; dur: 12000; loop: true; easing: linear">
+        </a-ring>
+        <!-- Inner shadow background for contrast -->
+        <a-ring radius-inner="0.58" radius-outer="0.59" color="#000"
+          material="shader: flat; side: double; opacity: 0.5"></a-ring>
+        <a-circle radius="0.59" color="#111"
+          material="shader: standard; opacity: 0.4; transparent: true; roughness: 0.8; metalness: 0.1; side: double;"></a-circle>
+
+        <!-- Hit Area Transparan (clickable + listener hotspot-trigger) -->
+        <a-circle radius="0.75" material="transparent: true; opacity: 0; shader: flat; side: double;" class="clickable"
+          hotspot-trigger="topic: portal-scene1">
+        </a-circle>
+
+        <!-- Label above the portal -->
+        <a-entity text="value: KE AULA UTAMA; align: center; color: #ffffff; width: 3.5; font: roboto;"
+          position="0 1.0 0"></a-entity>
+      </a-entity>
+
+      <!-- Portal to Scene 3 (Ke Rumah Bolon 3D) -->
+      <a-entity position="2.5 1.2 3" rotation="0 -140 0">
+        <!-- Visual dekorasi: Gold Ring (tidak perlu clickable/listener) -->
+        <a-ring radius-inner="0.6" radius-outer="0.75" color="#d4af37"
+          material="shader: standard; roughness: 0.1; metalness: 0.9; side: double; emissive: #d4af37; emissiveIntensity: 0.3;"
+          animation="property: rotation; to: 0 0 360; dur: 8000; loop: true; easing: linear"
+          animation__pulse="property: scale; to: 1.05 1.05 1.05; dir: alternate; dur: 1500; loop: true; easing: easeInOutSine">
+        </a-ring>
+        <!-- Visual dekorasi: Red Ring (tidak perlu clickable/listener) -->
+        <a-ring radius-inner="0.77" radius-outer="0.82" color="#7a1f1f"
+          material="shader: flat; side: double; opacity: 0.9"
+          animation="property: rotation; to: 0 0 -360; dur: 12000; loop: true; easing: linear">
+        </a-ring>
+        <!-- Inner shadow background for contrast -->
+        <a-ring radius-inner="0.58" radius-outer="0.59" color="#000"
+          material="shader: flat; side: double; opacity: 0.5"></a-ring>
+        <a-circle radius="0.59" color="#111"
+          material="shader: standard; opacity: 0.4; transparent: true; roughness: 0.8; metalness: 0.1; side: double;"></a-circle>
+
+        <!-- Hit Area Transparan (clickable + listener hotspot-trigger) -->
+        <a-circle radius="0.75" material="transparent: true; opacity: 0; shader: flat; side: double;" class="clickable"
+          hotspot-trigger="topic: portal-scene3">
+        </a-circle>
+
+        <!-- Label above the portal -->
+        <a-entity text="value: RUMAH BOLON 3D; align: center; color: #ffffff; width: 3.5; font: roboto;"
+          position="0 1.0 0"></a-entity>
+      </a-entity>
+
+    </a-scene>
+  </div>
+
+</body>
+
+</html>
