@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Museum Pusaka Batak — Detail Rumah Bolon 3D</title>
+  <meta name="description"
+    content="Eksplorasi model 3D interaktif Rumah Bolon, rumah adat tradisional suku Batak. Berjalan keliling, putar model, dan pelajari arsitektur klasiknya dalam pencahayaan siang hari yang cerah.">
+
+  <link rel="stylesheet" href="style.css">
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="main.js"></script>
+</head>
+
+<body>
+
+  <!-- HUD Exploration Instructions -->
+  <div id="hud-instructions">
+    <strong>Navigasi:</strong><br>
+    • WASD / Tombol Arah untuk bergerak<br>
+    • Gerakkan Mouse untuk melihat sekeliling<br>
+    • Arahkan pandangan (gaze) ke Rumah Bolon atau portal selama 1.2s untuk berinteraksi<br>
+    • Tekan ESC untuk membebaskan kursor mouse
+  </div>
+
+  <!-- Welcome Overlay UI -->
+  <div id="overlay">
+    <div class="welcome-card">
+      <h1 class="museum-title">Halaman Rumah Bolon</h1>
+      <p class="museum-subtitle">Museum Pusaka Batak — Model 3D</p>
+      <div class="separator"></div>
+
+      <div class="instructions-section">
+        <div class="control-item">
+          <div class="control-icon wasd">WASD</div>
+          <span class="control-label">Bergerak</span>
+        </div>
+        <div class="control-item">
+          <div class="control-icon">MOUSE</div>
+          <span class="control-label">Melihat Sekeliling</span>
+        </div>
+        <div class="control-item">
+          <div class="control-icon">GAZE</div>
+          <span class="control-label">Tahan Pandangan 1.2s</span>
+        </div>
+      </div>
+
+      <button class="enter-btn" id="enter-btn">Mulai Jelajah</button>
+    </div>
+  </div>
+
+  <!-- 3D Scene Container -->
+  <div id="canvas-container">
+    <a-scene embedded renderer="physicallyCorrectLights: false; colorManagement: true; antialias: true;"
+      shadow="type: pcfsoft">
+
+      <a-assets>
+        <a-asset-item id="rumahbolon-model" src="assets/models/rumahbolon.glb"></a-asset-item>
+      </a-assets>
+
+      <!-- ================= CAMERA & CONTROLS ================= -->
+      <!-- Camera has look-controls with pointerLockEnabled: true, WASD moving, and fuse gaze cursor inside -->
+      <a-entity id="player">
+        <a-camera id="camera" wasd-controls="acceleration: 45; fly: false;" look-controls="pointerLockEnabled: true;"
+          position="0 1.6 9" world-boundary-constraint="minX: -24; maxX: 24; minZ: -24; maxZ: 24; fixedY: 1.6;">
+          <a-cursor id="cursor" cursor="fuse: true; fuseTimeout: 1200" raycaster="objects: .clickable"
+            material="color: #d4af37; shader: flat; opacity: 0.9" position="0 0 -1"
+            geometry="primitive: ring; radiusInner: 0.015; radiusOuter: 0.025"
+            animation__fusing="property: scale; startEvents: fusing; easing: easeInCubic; dur: 1200; from: 1 1 1; to: 0.2 0.2 0.2"
+            animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 300; to: 1 1 1"
+            animation__click="property: scale; startEvents: click; easing: easeInCubic; dur: 150; from: 0.2 0.2 0.2; to: 1 1 1">
+          </a-cursor>
+        </a-camera>
+      </a-entity>
+
+      <!-- ================= LIGHTING (BRIGHT SUNNY DAY) ================= -->
+      <a-entity light="type: ambient; color: #fffdec; intensity: 0.75;"></a-entity>
+      <a-entity
+        light="type: directional; color: #fff3db; intensity: 1.25; castShadow: true; shadowMapHeight: 2048; shadowMapWidth: 2048;"
+        position="15 30 10">
+      </a-entity>
+
+      <!-- ================= SKYBOX & ENVIRONMENT ================= -->
+      <a-sky color="#bce6ff"></a-sky>
+      <a-sphere position="30 60 20" radius="3" color="#fffeca" material="shader: flat;"></a-sphere>
+
+      <!-- Grass Floor -->
+      <a-plane position="0 0 0" rotation="-90 0 0" width="60" height="60"
+        material="color: #4b6f24; roughness: 0.9; metalness: 0.1;" shadow="receive: true">
+      </a-plane>
+
+      <!-- Dirt floor patch directly underneath the house model -->
+      <a-circle position="0 0.01 -2" radius="7.5" rotation="-90 0 0"
+        material="color: #7d654a; roughness: 0.85; metalness: 0.05;" shadow="receive: true">
+      </a-circle>
+
+
+      <!-- ================= MAIN MODEL: RUMAH BOLON ================= -->
+      <!-- Interactive GLTF Model, clicks trigger spin-on-click component -->
+      <a-entity id="rumah-model" gltf-model="#rumahbolon-model" position="0 0 -2" scale="8 8 8" rotation="0 -90 0"
+        class="clickable" spin-on-click shadow="cast: true; receive: true;">
+      </a-entity>
+
+      <a-entity light="type: spot; color: #fff8eb; intensity: 0.5; distance: 15; angle: 45; decay: 1.2;"
+        position="0 10 8" rotation="-45 0 0">
+      </a-entity>
+
+
+      <!-- ================= PORTAL NAVIGASI CUSTOM (Consistent gold/red gaze portals) ================= -->
+      <!-- Portal to Scene 1 (Ke Aula Utama) -->
+      <a-entity position="-3.5 1.2 5" rotation="0 0 0">
+        <!-- Visual dekorasi: Gold Ring (tidak perlu clickable/listener) -->
+        <a-ring radius-inner="0.6" radius-outer="0.75" color="#d4af37"
+          material="shader: standard; roughness: 0.1; metalness: 0.9; side: double; emissive: #d4af37; emissiveIntensity: 0.3;"
+          animation="property: rotation; to: 0 0 360; dur: 8000; loop: true; easing: linear"
+          animation__pulse="property: scale; to: 1.05 1.05 1.05; dir: alternate; dur: 1500; loop: true; easing: easeInOutSine">
+        </a-ring>
+        <!-- Visual dekorasi: Red Ring (tidak perlu clickable/listener) -->
+        <a-ring radius-inner="0.77" radius-outer="0.82" color="#7a1f1f"
+          material="shader: flat; side: double; opacity: 0.9"
+          animation="property: rotation; to: 0 0 -360; dur: 12000; loop: true; easing: linear">
+        </a-ring>
+        <!-- Inner shadow background for contrast -->
+        <a-ring radius-inner="0.58" radius-outer="0.59" color="#000"
+          material="shader: flat; side: double; opacity: 0.5"></a-ring>
+        <a-circle radius="0.59" color="#111"
+          material="shader: standard; opacity: 0.4; transparent: true; roughness: 0.8; metalness: 0.1; side: double;"></a-circle>
+        
+        <!-- Hit Area Transparan (clickable + listener hotspot-trigger) -->
+        <a-circle radius="0.75"
+          material="transparent: true; opacity: 0; shader: flat; side: double;"
+          class="clickable"
+          hotspot-trigger="topic: portal-scene1">
+        </a-circle>
+
+        <!-- Label above the portal -->
+        <a-entity text="value: KE AULA UTAMA; align: center; color: #ffffff; width: 3.5; font: roboto;"
+          position="0 1.0 0"></a-entity>
+      </a-entity>
+
+      <!-- Portal to Scene 2 (Ke Tur Panorama 360°) -->
+      <a-entity position="3.5 1.2 5" rotation="0 0 0">
+        <!-- Visual dekorasi: Gold Ring (tidak perlu clickable/listener) -->
+        <a-ring radius-inner="0.6" radius-outer="0.75" color="#d4af37"
+          material="shader: standard; roughness: 0.1; metalness: 0.9; side: double; emissive: #d4af37; emissiveIntensity: 0.3;"
+          animation="property: rotation; to: 0 0 360; dur: 8000; loop: true; easing: linear"
+          animation__pulse="property: scale; to: 1.05 1.05 1.05; dir: alternate; dur: 1500; loop: true; easing: easeInOutSine">
+        </a-ring>
+        <!-- Visual dekorasi: Red Ring (tidak perlu clickable/listener) -->
+        <a-ring radius-inner="0.77" radius-outer="0.82" color="#7a1f1f"
+          material="shader: flat; side: double; opacity: 0.9"
+          animation="property: rotation; to: 0 0 -360; dur: 12000; loop: true; easing: linear">
+        </a-ring>
+        <!-- Inner shadow background for contrast -->
+        <a-ring radius-inner="0.58" radius-outer="0.59" color="#000"
+          material="shader: flat; side: double; opacity: 0.5"></a-ring>
+        <a-circle radius="0.59" color="#111"
+          material="shader: standard; opacity: 0.4; transparent: true; roughness: 0.8; metalness: 0.1; side: double;"></a-circle>
+        
+        <!-- Hit Area Transparan (clickable + listener hotspot-trigger) -->
+        <a-circle radius="0.75"
+          material="transparent: true; opacity: 0; shader: flat; side: double;"
+          class="clickable"
+          hotspot-trigger="topic: portal-scene2">
+        </a-circle>
+
+        <!-- Label above the portal -->
+        <a-entity text="value: TUR PANORAMA 360°; align: center; color: #ffffff; width: 3.5; font: roboto;"
+          position="0 1.0 0"></a-entity>
+      </a-entity>
+
+    </a-scene>
+  </div>
+
+</body>
+
+</html>
