@@ -319,7 +319,7 @@ AFRAME.registerComponent('exhibits-generator', {
 
         // Description text
         const descEl = document.createElement('a-entity');
-        descEl.setAttribute('text', `value: ${exhibit.description}; align: center; color: #dfdfdf; width: 2.0; font: roboto;`);
+        descEl.setAttribute('text', `value: ${exhibit.description}; align: center; color: #3a3530; width: 2.0; font: roboto;`);
         descEl.setAttribute('position', '0 -1.25 0.04');
         container.appendChild(descEl);
 
@@ -429,7 +429,7 @@ AFRAME.registerComponent('exhibits-generator', {
 
         // Description below title
         const descEl = document.createElement('a-entity');
-        descEl.setAttribute('text', `value: ${exhibit.description}; align: center; color: #dfdfdf; width: 2.0; font: roboto;`);
+        descEl.setAttribute('text', `value: ${exhibit.description}; align: center; color: #3a3530; width: 2.0; font: roboto;`);
         descEl.setAttribute('position', '0 -1.23 0.04');
         container.appendChild(descEl);
       }
