@@ -272,6 +272,7 @@ AFRAME.registerComponent('exhibits-generator', {
         frameBack.setAttribute('height', '1.6');
         frameBack.setAttribute('depth', '0.04');
         frameBack.setAttribute('material', 'color: #0c0c0c; roughness: 0.85; metalness: 0.05; shader: standard');
+        frameBack.setAttribute('shadow', 'cast: true; receive: true');
         container.appendChild(frameBack);
 
         // Batak Red border ring
@@ -297,6 +298,7 @@ AFRAME.registerComponent('exhibits-generator', {
         imgPlane.setAttribute('position', '0 0 0.026'); // Positioned on top of the borders
         imgPlane.setAttribute('material', `src: #${exhibit.id}-asset; shader: standard; roughness: 0.7; metalness: 0.0`);
         imgPlane.setAttribute('class', 'clickable');
+        imgPlane.setAttribute('shadow', 'cast: true; receive: true');
 
         // Dynamic scale hover effect
         imgPlane.addEventListener('mouseenter', () => {
@@ -330,6 +332,7 @@ AFRAME.registerComponent('exhibits-generator', {
         pedestal.setAttribute('depth', '1.2');
         pedestal.setAttribute('position', '0 0.4 0');
         pedestal.setAttribute('material', 'color: #16110d; roughness: 0.8; metalness: 0.1; shader: standard');
+        pedestal.setAttribute('shadow', 'cast: true; receive: true');
         container.appendChild(pedestal);
 
         // Gorga decorative gold trim around top edge of base
@@ -364,6 +367,7 @@ AFRAME.registerComponent('exhibits-generator', {
         modelEl.setAttribute('scale', `${exhibit.scale.x} ${exhibit.scale.y} ${exhibit.scale.z}`);
         // Slow Y rotation animation
         modelEl.setAttribute('animation', 'property: rotation; to: 0 360 0; loop: true; dur: 16000; easing: linear; rgb: true');
+        modelEl.setAttribute('shadow', 'cast: true; receive: true');
         container.appendChild(modelEl);
 
         // Tilted descriptive metal plaque on front of base
@@ -395,6 +399,7 @@ AFRAME.registerComponent('exhibits-generator', {
         frameBack.setAttribute('height', '1.4');
         frameBack.setAttribute('depth', '0.06');
         frameBack.setAttribute('material', 'color: #1a0f08; roughness: 0.85; metalness: 0.1; shader: standard');
+        frameBack.setAttribute('shadow', 'cast: true; receive: true');
         container.appendChild(frameBack);
 
         // Gold border inner bezel
@@ -413,6 +418,7 @@ AFRAME.registerComponent('exhibits-generator', {
         screen.setAttribute('material', `src: #${exhibit.id}-asset; shader: flat;`);
         screen.setAttribute('class', 'clickable');
         screen.setAttribute('video-controller', `videoEl: #${exhibit.id}-asset`);
+        screen.setAttribute('shadow', 'cast: true; receive: true');
         container.appendChild(screen);
 
         // Title below screen
