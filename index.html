@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Museum Pusaka Batak — Aula Utama</title>
   <!-- SEO Meta Tags -->
-  <meta name="description" content="Museum digital 3D interaktif yang menyajikan keindahan arsitektur dan ornamen budaya Batak. Rasakan pengalaman menjelajah aula utama secara virtual.">
-  
+  <meta name="description"
+    content="Museum digital 3D interaktif yang menyajikan keindahan arsitektur dan ornamen budaya Batak. Rasakan pengalaman menjelajah aula utama secara virtual.">
+
   <!-- CSS Stylesheet -->
   <link rel="stylesheet" href="style.css">
-  
+
   <!-- A-Frame CDN -->
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-  
+
   <!-- Exhibits Config -->
   <script src="config.js"></script>
-  
+
   <!-- Custom Logic & Components -->
   <script src="main.js"></script>
 </head>
+
 <body>
 
   <!-- Custom Crosshair -->
@@ -38,7 +41,7 @@
       <h1 class="museum-title">Museum Pusaka Batak</h1>
       <p class="museum-subtitle">Interactive 3D Cultural Hall</p>
       <div class="separator"></div>
-      
+
       <div class="instructions-section">
         <div class="control-item">
           <div class="control-icon wasd">WASD</div>
@@ -49,7 +52,7 @@
           <span class="control-label">Melihat Sekeliling</span>
         </div>
       </div>
-      
+
       <button class="enter-btn" id="enter-btn">Masuk Ke Museum</button>
     </div>
   </div>
@@ -57,12 +60,14 @@
   <!-- A-Frame Scene Container -->
   <div id="canvas-container">
     <!-- Physically correct lights is disabled to use A-Frame's simple, predictable lighting system -->
-    <a-scene embedded exhibits-generator renderer="physicallyCorrectLights: false; colorManagement: true; antialias: true;" shadow="type: pcfsoft">
-      
+    <a-scene embedded exhibits-generator
+      renderer="physicallyCorrectLights: false; colorManagement: true; antialias: true;" shadow="type: pcfsoft">
+
       <!-- A-Frame Assets Container -->
       <a-assets>
         <!-- Standard fallback materials -->
-        <a-mixin id="wall-material" material="color: #f0ece0; roughness: 0.7; metalness: 0.0; shader: standard"></a-mixin>
+        <a-mixin id="wall-material"
+          material="color: #f0ece0; roughness: 0.7; metalness: 0.0; shader: standard"></a-mixin>
         <a-mixin id="wood-dark" material="color: #1a0f08; roughness: 0.8; metalness: 0.1; shader: standard"></a-mixin>
         <a-mixin id="molding-gold" material="color: #D4AF37; shader: flat"></a-mixin>
         <a-mixin id="molding-black" material="color: #111111; shader: flat"></a-mixin>
@@ -72,11 +77,8 @@
       <!-- Camera starts in the middle of the room (X=0, Z=0, Y=1.6) looking down the hall (towards Z = -15) -->
       <!-- WASD movement and look-controls are on the camera. Custom constraint component enforces limits -->
       <a-entity id="player">
-        <a-camera id="camera"
-                  wasd-controls="acceleration: 45; fly: false;"
-                  look-controls="pointerLockEnabled: true;"
-                  position="0 1.6 0"
-                  room-boundary-constraint>
+        <a-camera id="camera" wasd-controls="acceleration: 45; fly: false;" look-controls="pointerLockEnabled: true;"
+          position="0 1.6 0" room-boundary-constraint>
           <a-cursor id="cursor" cursor="fuse: true; fuseTimeout: 1200" raycaster="objects: .clickable"
             material="color: #d4af37; shader: flat; opacity: 0.9" position="0 0 -1"
             geometry="primitive: ring; radiusInner: 0.015; radiusOuter: 0.025"
@@ -93,10 +95,11 @@
 
       <!-- 4 Point Lights spaced evenly on the ceiling along the hall to illuminate specific sections -->
       <!-- Fixtures are created using basic shapes to represent visual ceiling lights -->
-      
+
       <!-- Point Light 1 (Z = -11.25) -->
       <a-entity position="0 6.6 -11.25">
-        <a-entity light="type: point; color: #ffffff; intensity: 0.85; distance: 15; decay: 1.2; castShadow: true;"></a-entity>
+        <a-entity
+          light="type: point; color: #ffffff; intensity: 0.85; distance: 15; decay: 1.2; castShadow: true;"></a-entity>
         <!-- Lamp fixture -->
         <a-cylinder radius="0.15" height="0.1" mixin="wood-dark"></a-cylinder>
         <a-sphere radius="0.08" position="0 -0.06 0" material="color: #fffae6; shader: flat;"></a-sphere>
@@ -104,7 +107,8 @@
 
       <!-- Point Light 2 (Z = -3.75) -->
       <a-entity position="0 6.6 -3.75">
-        <a-entity light="type: point; color: #ffffff; intensity: 0.85; distance: 15; decay: 1.2; castShadow: true;"></a-entity>
+        <a-entity
+          light="type: point; color: #ffffff; intensity: 0.85; distance: 15; decay: 1.2; castShadow: true;"></a-entity>
         <!-- Lamp fixture -->
         <a-cylinder radius="0.15" height="0.1" mixin="wood-dark"></a-cylinder>
         <a-sphere radius="0.08" position="0 -0.06 0" material="color: #fffae6; shader: flat;"></a-sphere>
@@ -112,7 +116,8 @@
 
       <!-- Point Light 3 (Z = 3.75) -->
       <a-entity position="0 6.6 3.75">
-        <a-entity light="type: point; color: #ffffff; intensity: 0.85; distance: 15; decay: 1.2; castShadow: true;"></a-entity>
+        <a-entity
+          light="type: point; color: #ffffff; intensity: 0.85; distance: 15; decay: 1.2; castShadow: true;"></a-entity>
         <!-- Lamp fixture -->
         <a-cylinder radius="0.15" height="0.1" mixin="wood-dark"></a-cylinder>
         <a-sphere radius="0.08" position="0 -0.06 0" material="color: #fffae6; shader: flat;"></a-sphere>
@@ -120,7 +125,8 @@
 
       <!-- Point Light 4 (Z = 11.25) -->
       <a-entity position="0 6.6 11.25">
-        <a-entity light="type: point; color: #ffffff; intensity: 0.85; distance: 15; decay: 1.2; castShadow: true;"></a-entity>
+        <a-entity
+          light="type: point; color: #ffffff; intensity: 0.85; distance: 15; decay: 1.2; castShadow: true;"></a-entity>
         <!-- Lamp fixture -->
         <a-cylinder radius="0.15" height="0.1" mixin="wood-dark"></a-cylinder>
         <a-sphere radius="0.08" position="0 -0.06 0" material="color: #fffae6; shader: flat;"></a-sphere>
@@ -128,11 +134,10 @@
 
 
       <!-- ================= ROOM SHELL (30m x 10m x 7m) ================= -->
-      
+
       <!-- Floors: Medium brown parquet look with subtle reflectivity -->
       <a-plane position="0 0 0" rotation="-90 0 0" width="10" height="30"
-               material="color: #8b5a36; roughness: 0.6; metalness: 0.15; shader: standard"
-               shadow="receive: true">
+        material="color: #8b5a36; roughness: 0.6; metalness: 0.15; shader: standard" shadow="receive: true">
       </a-plane>
 
       <!-- Ceiling: White/Ivory matching the walls -->
@@ -141,25 +146,29 @@
 
       <!-- Walls -->
       <!-- North Wall (Far End) -->
-      <a-plane position="0 3.5 -15" width="10" height="7" mixin="wall-material" shadow="cast: true; receive: true"></a-plane>
-      
+      <a-plane position="0 3.5 -15" width="10" height="7" mixin="wall-material"
+        shadow="cast: true; receive: true"></a-plane>
+
       <!-- South Wall (Back End) -->
-      <a-plane position="0 3.5 15" rotation="0 180 0" width="10" height="7" mixin="wall-material" shadow="cast: true; receive: true"></a-plane>
-      
+      <a-plane position="0 3.5 15" rotation="0 180 0" width="10" height="7" mixin="wall-material"
+        shadow="cast: true; receive: true"></a-plane>
+
       <!-- West Wall (Left Side) -->
-      <a-plane position="-5 3.5 0" rotation="0 90 0" width="30" height="7" mixin="wall-material" shadow="cast: true; receive: true"></a-plane>
-      
+      <a-plane position="-5 3.5 0" rotation="0 90 0" width="30" height="7" mixin="wall-material"
+        shadow="cast: true; receive: true"></a-plane>
+
       <!-- East Wall (Right Side) -->
-      <a-plane position="5 3.5 0" rotation="0 -90 0" width="30" height="7" mixin="wall-material" shadow="cast: true; receive: true"></a-plane>
+      <a-plane position="5 3.5 0" rotation="0 -90 0" width="30" height="7" mixin="wall-material"
+        shadow="cast: true; receive: true"></a-plane>
 
 
       <!-- ================= ARCHITECTURAL DETAILS (Molding) ================= -->
       <!-- Classic ceiling borders (Gold & Black) along the perimeter of the room at Y = 6.95m -->
-      
+
       <!-- Left side moldings (West) -->
       <a-plane position="-4.92 6.95 0" rotation="90 90 0" width="30" height="0.05" mixin="molding-gold"></a-plane>
       <a-plane position="-4.84 6.95 0" rotation="90 90 0" width="30" height="0.03" mixin="molding-black"></a-plane>
-      
+
       <!-- Right side moldings (East) -->
       <a-plane position="4.92 6.95 0" rotation="90 -90 0" width="30" height="0.05" mixin="molding-gold"></a-plane>
       <a-plane position="4.84 6.95 0" rotation="90 -90 0" width="30" height="0.03" mixin="molding-black"></a-plane>
@@ -181,120 +190,147 @@
       <!-- LEFT SIDE PILLARS (X = -4.2) -->
       <!-- Pillar L1 (Z = -11.25) -->
       <a-entity position="-4.2 0 -11.25">
-        <a-cylinder position="0 0.25 0" radius="0.26" height="0.5" mixin="wood-dark" shadow="cast: true; receive: true"></a-cylinder> <!-- Base -->
-        <a-cylinder position="0 3.5 0" radius="0.22" height="6.0" gorga-texture shadow="cast: true; receive: true"></a-cylinder>      <!-- Gorga carving -->
-        <a-cylinder position="0 6.75 0" radius="0.26" height="0.5" mixin="wood-dark" shadow="cast: true; receive: true"></a-cylinder> <!-- Capital -->
+        <a-cylinder position="0 0.25 0" radius="0.26" height="0.5" mixin="wood-dark"
+          shadow="cast: true; receive: true"></a-cylinder> <!-- Base -->
+        <a-cylinder position="0 3.5 0" radius="0.22" height="6.0" gorga-texture
+          shadow="cast: true; receive: true"></a-cylinder> <!-- Gorga carving -->
+        <a-cylinder position="0 6.75 0" radius="0.26" height="0.5" mixin="wood-dark"
+          shadow="cast: true; receive: true"></a-cylinder> <!-- Capital -->
       </a-entity>
 
       <!-- Pillar L2 (Z = -3.75) -->
       <a-entity position="-4.2 0 -3.75">
-        <a-cylinder position="0 0.25 0" radius="0.26" height="0.5" mixin="wood-dark" shadow="cast: true; receive: true"></a-cylinder>
-        <a-cylinder position="0 3.5 0" radius="0.22" height="6.0" gorga-texture shadow="cast: true; receive: true"></a-cylinder>
-        <a-cylinder position="0 6.75 0" radius="0.26" height="0.5" mixin="wood-dark" shadow="cast: true; receive: true"></a-cylinder>
+        <a-cylinder position="0 0.25 0" radius="0.26" height="0.5" mixin="wood-dark"
+          shadow="cast: true; receive: true"></a-cylinder>
+        <a-cylinder position="0 3.5 0" radius="0.22" height="6.0" gorga-texture
+          shadow="cast: true; receive: true"></a-cylinder>
+        <a-cylinder position="0 6.75 0" radius="0.26" height="0.5" mixin="wood-dark"
+          shadow="cast: true; receive: true"></a-cylinder>
       </a-entity>
 
       <!-- Pillar L3 (Z = 3.75) -->
       <a-entity position="-4.2 0 3.75">
-        <a-cylinder position="0 0.25 0" radius="0.26" height="0.5" mixin="wood-dark" shadow="cast: true; receive: true"></a-cylinder>
-        <a-cylinder position="0 3.5 0" radius="0.22" height="6.0" gorga-texture shadow="cast: true; receive: true"></a-cylinder>
-        <a-cylinder position="0 6.75 0" radius="0.26" height="0.5" mixin="wood-dark" shadow="cast: true; receive: true"></a-cylinder>
+        <a-cylinder position="0 0.25 0" radius="0.26" height="0.5" mixin="wood-dark"
+          shadow="cast: true; receive: true"></a-cylinder>
+        <a-cylinder position="0 3.5 0" radius="0.22" height="6.0" gorga-texture
+          shadow="cast: true; receive: true"></a-cylinder>
+        <a-cylinder position="0 6.75 0" radius="0.26" height="0.5" mixin="wood-dark"
+          shadow="cast: true; receive: true"></a-cylinder>
       </a-entity>
 
       <!-- Pillar L4 (Z = 11.25) -->
       <a-entity position="-4.2 0 11.25">
-        <a-cylinder position="0 0.25 0" radius="0.26" height="0.5" mixin="wood-dark" shadow="cast: true; receive: true"></a-cylinder>
-        <a-cylinder position="0 3.5 0" radius="0.22" height="6.0" gorga-texture shadow="cast: true; receive: true"></a-cylinder>
-        <a-cylinder position="0 6.75 0" radius="0.26" height="0.5" mixin="wood-dark" shadow="cast: true; receive: true"></a-cylinder>
+        <a-cylinder position="0 0.25 0" radius="0.26" height="0.5" mixin="wood-dark"
+          shadow="cast: true; receive: true"></a-cylinder>
+        <a-cylinder position="0 3.5 0" radius="0.22" height="6.0" gorga-texture
+          shadow="cast: true; receive: true"></a-cylinder>
+        <a-cylinder position="0 6.75 0" radius="0.26" height="0.5" mixin="wood-dark"
+          shadow="cast: true; receive: true"></a-cylinder>
       </a-entity>
 
       <!-- RIGHT SIDE PILLARS (X = 4.2) -->
       <!-- Pillar R1 (Z = -11.25) -->
       <a-entity position="4.2 0 -11.25">
-        <a-cylinder position="0 0.25 0" radius="0.26" height="0.5" mixin="wood-dark" shadow="cast: true; receive: true"></a-cylinder> <!-- Base -->
-        <a-cylinder position="0 3.5 0" radius="0.22" height="6.0" gorga-texture shadow="cast: true; receive: true"></a-cylinder>      <!-- Gorga carving -->
-        <a-cylinder position="0 6.75 0" radius="0.26" height="0.5" mixin="wood-dark" shadow="cast: true; receive: true"></a-cylinder> <!-- Capital -->
+        <a-cylinder position="0 0.25 0" radius="0.26" height="0.5" mixin="wood-dark"
+          shadow="cast: true; receive: true"></a-cylinder> <!-- Base -->
+        <a-cylinder position="0 3.5 0" radius="0.22" height="6.0" gorga-texture
+          shadow="cast: true; receive: true"></a-cylinder> <!-- Gorga carving -->
+        <a-cylinder position="0 6.75 0" radius="0.26" height="0.5" mixin="wood-dark"
+          shadow="cast: true; receive: true"></a-cylinder> <!-- Capital -->
       </a-entity>
 
       <!-- Pillar R2 (Z = -3.75) -->
       <a-entity position="4.2 0 -3.75">
-        <a-cylinder position="0 0.25 0" radius="0.26" height="0.5" mixin="wood-dark" shadow="cast: true; receive: true"></a-cylinder>
-        <a-cylinder position="0 3.5 0" radius="0.22" height="6.0" gorga-texture shadow="cast: true; receive: true"></a-cylinder>
-        <a-cylinder position="0 6.75 0" radius="0.26" height="0.5" mixin="wood-dark" shadow="cast: true; receive: true"></a-cylinder>
+        <a-cylinder position="0 0.25 0" radius="0.26" height="0.5" mixin="wood-dark"
+          shadow="cast: true; receive: true"></a-cylinder>
+        <a-cylinder position="0 3.5 0" radius="0.22" height="6.0" gorga-texture
+          shadow="cast: true; receive: true"></a-cylinder>
+        <a-cylinder position="0 6.75 0" radius="0.26" height="0.5" mixin="wood-dark"
+          shadow="cast: true; receive: true"></a-cylinder>
       </a-entity>
 
       <!-- Pillar R3 (Z = 3.75) -->
       <a-entity position="4.2 0 3.75">
-        <a-cylinder position="0 0.25 0" radius="0.26" height="0.5" mixin="wood-dark" shadow="cast: true; receive: true"></a-cylinder>
-        <a-cylinder position="0 3.5 0" radius="0.22" height="6.0" gorga-texture shadow="cast: true; receive: true"></a-cylinder>
-        <a-cylinder position="0 6.75 0" radius="0.26" height="0.5" mixin="wood-dark" shadow="cast: true; receive: true"></a-cylinder>
+        <a-cylinder position="0 0.25 0" radius="0.26" height="0.5" mixin="wood-dark"
+          shadow="cast: true; receive: true"></a-cylinder>
+        <a-cylinder position="0 3.5 0" radius="0.22" height="6.0" gorga-texture
+          shadow="cast: true; receive: true"></a-cylinder>
+        <a-cylinder position="0 6.75 0" radius="0.26" height="0.5" mixin="wood-dark"
+          shadow="cast: true; receive: true"></a-cylinder>
       </a-entity>
 
       <!-- Pillar R4 (Z = 11.25) -->
       <a-entity position="4.2 0 11.25">
-        <a-cylinder position="0 0.25 0" radius="0.26" height="0.5" mixin="wood-dark" shadow="cast: true; receive: true"></a-cylinder>
-        <a-cylinder position="0 3.5 0" radius="0.22" height="6.0" gorga-texture shadow="cast: true; receive: true"></a-cylinder>
-        <a-cylinder position="0 6.75 0" radius="0.26" height="0.5" mixin="wood-dark" shadow="cast: true; receive: true"></a-cylinder>
+        <a-cylinder position="0 0.25 0" radius="0.26" height="0.5" mixin="wood-dark"
+          shadow="cast: true; receive: true"></a-cylinder>
+        <a-cylinder position="0 3.5 0" radius="0.22" height="6.0" gorga-texture
+          shadow="cast: true; receive: true"></a-cylinder>
+        <a-cylinder position="0 6.75 0" radius="0.26" height="0.5" mixin="wood-dark"
+          shadow="cast: true; receive: true"></a-cylinder>
       </a-entity>
 
       <!-- ================= NAVIGATION PORTALS ================= -->
       <!-- Portal to Scene 2 (Panorama 360°) -->
       <a-entity position="-2.5 1.2 12" rotation="0 180 0">
         <!-- Visual dekorasi: Gold Ring (tidak perlu clickable/listener) -->
-        <a-ring radius-inner="0.6" radius-outer="0.75" color="#d4af37" 
-                material="shader: standard; roughness: 0.1; metalness: 0.9; side: double; emissive: #d4af37; emissiveIntensity: 0.3;"
-                animation="property: rotation; to: 0 0 360; dur: 8000; loop: true; easing: linear"
-                animation__pulse="property: scale; to: 1.05 1.05 1.05; dir: alternate; dur: 1500; loop: true; easing: easeInOutSine">
+        <a-ring radius-inner="0.6" radius-outer="0.75" color="#d4af37"
+          material="shader: standard; roughness: 0.1; metalness: 0.9; side: double; emissive: #d4af37; emissiveIntensity: 0.3;"
+          animation="property: rotation; to: 0 0 360; dur: 8000; loop: true; easing: linear"
+          animation__pulse="property: scale; to: 1.05 1.05 1.05; dir: alternate; dur: 1500; loop: true; easing: easeInOutSine">
         </a-ring>
         <!-- Visual dekorasi: Red Ring (tidak perlu clickable/listener) -->
-        <a-ring radius-inner="0.77" radius-outer="0.82" color="#7a1f1f" 
-                material="shader: flat; side: double; opacity: 0.9"
-                animation="property: rotation; to: 0 0 -360; dur: 12000; loop: true; easing: linear">
+        <a-ring radius-inner="0.77" radius-outer="0.82" color="#7a1f1f"
+          material="shader: flat; side: double; opacity: 0.9"
+          animation="property: rotation; to: 0 0 -360; dur: 12000; loop: true; easing: linear">
         </a-ring>
         <!-- Inner shadow background for contrast -->
-        <a-ring radius-inner="0.58" radius-outer="0.59" color="#000" material="shader: flat; side: double; opacity: 0.5"></a-ring>
-        <a-circle radius="0.59" color="#111" material="shader: standard; opacity: 0.4; transparent: true; roughness: 0.8; metalness: 0.1; side: double;"></a-circle>
-        
+        <a-ring radius-inner="0.58" radius-outer="0.59" color="#000"
+          material="shader: flat; side: double; opacity: 0.5"></a-ring>
+        <a-circle radius="0.59" color="#111"
+          material="shader: standard; opacity: 0.4; transparent: true; roughness: 0.8; metalness: 0.1; side: double;"></a-circle>
+
         <!-- Hit Area Transparan (clickable + listener hotspot-trigger) -->
-        <a-circle radius="0.75" 
-                  material="transparent: true; opacity: 0; shader: flat; side: double;" 
-                  class="clickable" 
-                  hotspot-trigger="topic: portal-scene2">
+        <a-circle radius="0.75" material="transparent: true; opacity: 0; shader: flat; side: double;" class="clickable"
+          hotspot-trigger="topic: portal-scene2">
         </a-circle>
 
         <!-- Label above the portal -->
-        <a-entity text="value: TUR PANORAMA 360°; align: center; color: #ffffff; width: 3.5; font: roboto;" position="0 1.0 0"></a-entity>
+        <a-entity text="value: TUR PANORAMA 360°; align: center; color: #ffffff; width: 3.5; font: roboto;"
+          position="0 1.0 0"></a-entity>
       </a-entity>
 
       <!-- Portal to Scene 3 (Model Rumah Bolon 3D) -->
       <a-entity position="2.5 1.2 12" rotation="0 180 0">
         <!-- Visual dekorasi: Gold Ring (tidak perlu clickable/listener) -->
-        <a-ring radius-inner="0.6" radius-outer="0.75" color="#d4af37" 
-                material="shader: standard; roughness: 0.1; metalness: 0.9; side: double; emissive: #d4af37; emissiveIntensity: 0.3;"
-                animation="property: rotation; to: 0 0 360; dur: 8000; loop: true; easing: linear"
-                animation__pulse="property: scale; to: 1.05 1.05 1.05; dir: alternate; dur: 1500; loop: true; easing: easeInOutSine">
+        <a-ring radius-inner="0.6" radius-outer="0.75" color="#d4af37"
+          material="shader: standard; roughness: 0.1; metalness: 0.9; side: double; emissive: #d4af37; emissiveIntensity: 0.3;"
+          animation="property: rotation; to: 0 0 360; dur: 8000; loop: true; easing: linear"
+          animation__pulse="property: scale; to: 1.05 1.05 1.05; dir: alternate; dur: 1500; loop: true; easing: easeInOutSine">
         </a-ring>
         <!-- Visual dekorasi: Red Ring (tidak perlu clickable/listener) -->
-        <a-ring radius-inner="0.77" radius-outer="0.82" color="#7a1f1f" 
-                material="shader: flat; side: double; opacity: 0.9"
-                animation="property: rotation; to: 0 0 -360; dur: 12000; loop: true; easing: linear">
+        <a-ring radius-inner="0.77" radius-outer="0.82" color="#7a1f1f"
+          material="shader: flat; side: double; opacity: 0.9"
+          animation="property: rotation; to: 0 0 -360; dur: 12000; loop: true; easing: linear">
         </a-ring>
         <!-- Inner shadow background for contrast -->
-        <a-ring radius-inner="0.58" radius-outer="0.59" color="#000" material="shader: flat; side: double; opacity: 0.5"></a-ring>
-        <a-circle radius="0.59" color="#111" material="shader: standard; opacity: 0.4; transparent: true; roughness: 0.8; metalness: 0.1; side: double;"></a-circle>
-        
+        <a-ring radius-inner="0.58" radius-outer="0.59" color="#000"
+          material="shader: flat; side: double; opacity: 0.5"></a-ring>
+        <a-circle radius="0.59" color="#111"
+          material="shader: standard; opacity: 0.4; transparent: true; roughness: 0.8; metalness: 0.1; side: double;"></a-circle>
+
         <!-- Hit Area Transparan (clickable + listener hotspot-trigger) -->
-        <a-circle radius="0.75" 
-                  material="transparent: true; opacity: 0; shader: flat; side: double;" 
-                  class="clickable" 
-                  hotspot-trigger="topic: portal-scene3">
+        <a-circle radius="0.75" material="transparent: true; opacity: 0; shader: flat; side: double;" class="clickable"
+          hotspot-trigger="topic: portal-scene3">
         </a-circle>
 
         <!-- Label above the portal -->
-        <a-entity text="value: RUMAH BOLON 3D; align: center; color: #ffffff; width: 3.5; font: roboto;" position="0 1.0 0"></a-entity>
+        <a-entity text="value: Lumbung Padi 3D; align: center; color: #ffffff; width: 3.5; font: roboto;"
+          position="0 1.0 0"></a-entity>
       </a-entity>
 
     </a-scene>
   </div>
 
 </body>
+
 </html>
