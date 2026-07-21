@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Museum Pusaka Batak — Detail Rumah Bolon 3D</title>
+  <title>Museum Pusaka Batak — Detail Lumbung Padi 3D</title>
   <meta name="description"
-    content="Eksplorasi model 3D interaktif Rumah Bolon, rumah adat tradisional suku Batak. Berjalan keliling, putar model, dan pelajari arsitektur klasiknya dalam pencahayaan siang hari yang cerah.">
+    content="Eksplorasi model 3D interaktif Lumbung Padi, rumah adat tradisional suku Batak. Berjalan keliling, putar model, dan pelajari arsitektur klasiknya dalam pencahayaan siang hari yang cerah.">
 
   <link rel="stylesheet" href="style.css">
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
@@ -20,14 +20,14 @@
     <strong>Navigasi:</strong><br>
     • WASD / Tombol Arah untuk bergerak<br>
     • Gerakkan Mouse untuk melihat sekeliling<br>
-    • Arahkan pandangan (gaze) ke Rumah Bolon atau portal selama 1.2s untuk berinteraksi<br>
+    • Arahkan pandangan (gaze) ke Lumbung Padi atau portal selama 1.2s untuk berinteraksi<br>
     • Tekan ESC untuk membebaskan kursor mouse
   </div>
 
   <!-- Welcome Overlay UI -->
   <div id="overlay">
     <div class="welcome-card">
-      <h1 class="museum-title">Halaman Rumah Bolon</h1>
+      <h1 class="museum-title">Halaman Lumbung Padi</h1>
       <p class="museum-subtitle">Museum Pusaka Batak — Model 3D</p>
       <div class="separator"></div>
 
@@ -96,7 +96,7 @@
       </a-circle>
 
 
-      <!-- ================= MAIN MODEL: RUMAH BOLON ================= -->
+      <!-- ================= MAIN MODEL: Lumbung Padi ================= -->
       <!-- Interactive GLTF Model, clicks trigger spin-on-click component -->
       <a-entity id="rumah-model" gltf-model="#rumahbolon-model" position="0 0 -2" scale="8 8 8" rotation="0 -90 0"
         class="clickable" spin-on-click shadow="cast: true; receive: true;">
@@ -126,11 +126,9 @@
           material="shader: flat; side: double; opacity: 0.5"></a-ring>
         <a-circle radius="0.59" color="#111"
           material="shader: standard; opacity: 0.4; transparent: true; roughness: 0.8; metalness: 0.1; side: double;"></a-circle>
-        
+
         <!-- Hit Area Transparan (clickable + listener hotspot-trigger) -->
-        <a-circle radius="0.75"
-          material="transparent: true; opacity: 0; shader: flat; side: double;"
-          class="clickable"
+        <a-circle radius="0.75" material="transparent: true; opacity: 0; shader: flat; side: double;" class="clickable"
           hotspot-trigger="topic: portal-scene1">
         </a-circle>
 
@@ -157,11 +155,9 @@
           material="shader: flat; side: double; opacity: 0.5"></a-ring>
         <a-circle radius="0.59" color="#111"
           material="shader: standard; opacity: 0.4; transparent: true; roughness: 0.8; metalness: 0.1; side: double;"></a-circle>
-        
+
         <!-- Hit Area Transparan (clickable + listener hotspot-trigger) -->
-        <a-circle radius="0.75"
-          material="transparent: true; opacity: 0; shader: flat; side: double;"
-          class="clickable"
+        <a-circle radius="0.75" material="transparent: true; opacity: 0; shader: flat; side: double;" class="clickable"
           hotspot-trigger="topic: portal-scene2">
         </a-circle>
 
