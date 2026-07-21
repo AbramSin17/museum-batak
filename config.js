@@ -43,8 +43,8 @@ const EXHIBITS_DATA = [
     id: "model-rumah",
     type: "model",
     src: "assets/models/rumahbolon.glb",
-    title: "Miniatur Rumah Bolon",
-    description: "Rumah adat besar tradisional suku Batak dengan atap melengkung khas mirip tanduk kerbau.",
+    title: "Lumbung Padi",
+    description: "Lumbung padi atau sopa adalah bangunan khas Batak yang digunakan untuk menyimpan hasil panen (padi). Berfungsi sebagai simbol kemakmuran dan penjaga ketahanan pangan keluarga.",
     position: { x: -3.8, y: 0, z: 0 }, // Left side
     rotation: { x: 0, y: 90, z: 0 },
     scale: { x: 0.5, y: 0.5, z: 0.5 }
